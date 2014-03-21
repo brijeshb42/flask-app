@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, PasswordField
 
-from wtforms.validators import Required, EqualTo
+from wtforms.validators import Required, EqualTo, Email
 
 class LoginForm(Form):
 	username = TextField('username',validators = [Required()])
@@ -9,10 +9,13 @@ class LoginForm(Form):
 	remember_me = BooleanField('remember_me', default = False)
 
 class SignupForm(Form):
-	username = TextField('username',validators = [Required()])
-	email    = TextField('email', validators = [Required()])
-	password = PasswordField('password',validators = [Required()])
-	cpassword = PasswordField('cpassword',validators = [Required(), EqualTo(password)])
+	username = TextField('Username',validators = [Required()])
+	email    = TextField('Email', validators = [Required(), Email()])
+	password = PasswordField('Password',validators = [Required()])
+	cpassword = PasswordField('Confirm Password',validators = [
+		Required(),
+		EqualTo('password', message='Passwords do not match')
+		])
 
 class ForgotForm(Form):
-	email    = TextField('email', validators = [Required()])
+	email    = TextField('email', validators = [Required(), Email()])

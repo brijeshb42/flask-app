@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from jinja2 import TemplateNotFound
+import models
 
 Users = Blueprint('Users',__name__)
 

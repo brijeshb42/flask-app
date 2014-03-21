@@ -1,15 +1,18 @@
-from flask import Flask, render_template, flash, redirect, request
-from users import Users
-from users.forms import LoginForm
+from flask import Flask, render_template
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-app.register_blueprint(Users, url_prefix='/u')
+db = SQLAlchemy(app)
+
+@app.errorhandler(404)
+def not_found(error):
+	return 'NOT found', 404
 
 @app.route('/', methods = ['GET','POST'])
-def login():
-	form = LoginForm()
-	if form.validate_on_submit():
-		return 'OK'+form.username.data
-	return render_template('base.html',form = form)
+def index():
+	return render_template('base.html')
+
+from app.users.views import mod as usersModule
+app.register_blueprint(usersModule)
